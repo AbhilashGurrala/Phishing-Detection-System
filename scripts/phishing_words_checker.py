@@ -30,3 +30,10 @@ def run_phishing_check(data):
     # Check phishing words in subject and body
     data['phishing_words_in_subject'] = data['subject'].apply(lambda x: check_phishing_words(x, phishing_keywords))
     data['phishing_words_in_body'] = data['body'].apply(lambda x: check_phishing_words(x, phishing_keywords))
+
+    data = data.assign(
+        phishing_words_in_subject=data['phishing_words_in_subject'].fillna(""),
+        phishing_words_in_body=data['phishing_words_in_body'].fillna("")
+    )
+
+    return data

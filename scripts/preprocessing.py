@@ -7,7 +7,7 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-# NLTK dependencies
+# NLTK
 nltk.download('stopwords')
 nltk.download('punkt')
 nltk.download('wordnet')
@@ -35,7 +35,7 @@ def preprocess(text):
     return ' '.join(words).strip()
 
 def run_preprocessing(data):
-    """Apply preprocessing to the data"""
+    """Apply preprocessing to the data"""#
     # Standardize column names
     data.columns = [col.strip().lower() for col in data.columns]
 
