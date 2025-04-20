@@ -5,7 +5,7 @@ import time
 import re
 from datetime import datetime
 
-DB_PATH = 'compromised_domains.db'
+DB_PATH = 'scripts/compromised_domains.db'
 
 def connect_db():
     """Connect to the SQLite database"""
