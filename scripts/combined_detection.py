@@ -1,54 +1,46 @@
 import joblib
 import pandas as pd
+import argparse
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 
-def combined_detection():
-    """Combine predictions from Random Forest, XGBoost, and Anomaly Detection models on the small dataset."""
-
-    # Load small test dataset
-    X_test = pd.read_csv('../data/X_test_small.csv')
-    y_test = pd.read_csv('../data/y_test_small.csv').values.ravel()
+def combined_detection(X_path, y_path, rf_model_path, xgb_model_path, anomaly_model_path, output_path):
+    """Combine predictions from RF, XGBoost, and Anomaly Detection models."""
+    X_test = pd.read_csv(X_path)
+    y_test = pd.read_csv(y_path).values.ravel()
 
     # Keep numeric columns only
     X_test_numeric = X_test.select_dtypes(include=['number'])
 
-    # Load pre-trained models
-    rf_model = joblib.load('../models/random_forest_small.pkl')
-    xgb_model = joblib.load('../models/xgboost_small.pkl')
-    anomaly_detector = joblib.load('../models/isolation_forest.pkl')
+    # Load models
+    rf_model = joblib.load(rf_model_path)
+    xgb_model = joblib.load(xgb_model_path)
+    anomaly_detector = joblib.load(anomaly_model_path)
 
-    # Predict using Random Forest and XGBoost
+    # Predictions
     rf_pred = rf_model.predict(X_test_numeric)
     xgb_pred = xgb_model.predict(X_test_numeric)
+    anomaly_pred = [0 if pred == -1 else 1 for pred in anomaly_detector.predict(X_test_numeric)]
 
-    # Anomaly Detection predictions (Isolation Forest: -1 = anomaly/phishing, 1 = normal)
-    anomaly_pred = anomaly_detector.predict(X_test_numeric)
-    anomaly_pred = [0 if pred == -1 else 1 for pred in anomaly_pred]
+    # Combine logic
+    combined_pred = [
+        "Phishing" if rf == 1 or xgb == 1 or anomaly == 0 else "Legitimate"
+        for rf, xgb, anomaly in zip(rf_pred, xgb_pred, anomaly_pred)
+    ]
 
-    # Combined predictions (phishing if any model flags as phishing)
-    combined_pred = []
-    for rf, xgb, anomaly in zip(rf_pred, xgb_pred, anomaly_pred):
-        if rf == 1 or xgb == 1 or anomaly == 0:
-            combined_pred.append("Phishing")
-        else:
-            combined_pred.append("Legitimate")
-
-    # Evaluate combined model performance
     binary_pred = [1 if label == "Phishing" else 0 for label in combined_pred]
     accuracy = accuracy_score(y_test, binary_pred)
-    print(f"Combined Detection Accuracy (small dataset): {accuracy:.4f}")
 
+    print(f"\nCombined Detection Accuracy ({output_path}): {accuracy:.4f}")
     print("\nClassification Report:")
     print(classification_report(y_test, binary_pred))
-
     print("\nConfusion Matrix:")
     print(confusion_matrix(y_test, binary_pred))
 
-    # Add actual labels and prediction results
-    X_test['Actual Label'] = ["Phishing" if label == 1 else "Legitimate" for label in y_test]
+    # Add results to the original data
+    X_test['Actual Label'] = ["Phishing" if y == 1 else "Legitimate" for y in y_test]
     X_test['Result'] = combined_pred
 
-    # Select specific columns to save
+    # Save only selected columns
     columns_to_keep = [
         'sender', 'receiver', 'date', 'subject', 'body', 'urls', 'clean_subject',
         'clean_body', 'sender_domain', 'compromised_sender', 'extracted_domains',
@@ -56,10 +48,32 @@ def combined_detection():
         'Actual Label', 'Result'
     ]
     results_df = X_test[columns_to_keep]
+    results_df.to_csv(output_path, index=False)
+    print(f"Results saved to {output_path}")
+    return accuracy
 
-    # Save results to CSV
-    results_df.to_csv('../data/combined_detection_results_small.csv', index=False)
-    print("Combined detection results saved as combined_detection_results_small.csv")
-
+# Only runs if this script is called directly
 if __name__ == "__main__":
-    combined_detection()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--size", choices=["small", "large"], default="small", help="Choose dataset size")
+    args = parser.parse_args()
+
+    # File paths for small and large
+    if args.size == "small":
+        X_path = "../data/X_test_small.csv"
+        y_path = "../data/y_test_small.csv"
+        rf_model_path = "../models/random_forest_small.pkl"
+        xgb_model_path = "../models/xgboost_small.pkl"
+        anomaly_model_path = "../models/isolation_forest.pkl"  # same for both sizes
+        output_path = "../data/combined_detection_results_small.csv"
+    else:
+        X_path = "../data/X_test_large.csv"
+        y_path = "../data/y_test_large.csv"
+        rf_model_path = "../models/random_forest_large.pkl"
+        xgb_model_path = "../models/xgboost_large.pkl"
+        anomaly_model_path = "../models/isolation_forest.pkl"
+        output_path = "../data/combined_detection_results_large.csv"
+
+    combined_detection(
+        X_path, y_path, rf_model_path, xgb_model_path, anomaly_model_path, output_path
+    )

@@ -1,9 +1,13 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
+import os
 
-def split_dataset(file_path, small_size=1000, test_size=0.2, random_state=42):
+def split_dataset(file_path, small_size=1000, test_size=0.2, random_state=42, output_dir=None):
     """Splits the dataset into small and large training/testing sets."""
 
+    if output_dir is None:
+        output_dir = '../data'
+    os.makedirs(output_dir, exist_ok=True)
     # Load the dataset
     data = pd.read_csv(file_path)
 
@@ -22,16 +26,15 @@ def split_dataset(file_path, small_size=1000, test_size=0.2, random_state=42):
         large_data.drop(columns=['label']), large_data['label'], test_size=test_size, random_state=random_state)
 
     # Save small dataset splits
-    X_train_small.to_csv('../data/X_train_small.csv', index=False)
-    X_test_small.to_csv('../data/X_test_small.csv', index=False)
-    y_train_small.to_csv('../data/y_train_small.csv', index=False)
-    y_test_small.to_csv('../data/y_test_small.csv', index=False)
+    X_train_small.to_csv(os.path.join(output_dir, 'X_train_small.csv'), index=False)
+    X_test_small.to_csv(os.path.join(output_dir, 'X_test_small.csv'), index=False)
+    y_train_small.to_csv(os.path.join(output_dir, 'y_train_small.csv'), index=False)
+    y_test_small.to_csv(os.path.join(output_dir, 'y_test_small.csv'), index=False)
 
-    # Save large dataset splits
-    X_train_large.to_csv('../data/X_train_large.csv', index=False)
-    X_test_large.to_csv('../data/X_test_large.csv', index=False)
-    y_train_large.to_csv('../data/y_train_large.csv', index=False)
-    y_test_large.to_csv('../data/y_test_large.csv', index=False)
+    X_train_large.to_csv(os.path.join(output_dir, 'X_train_large.csv'), index=False)
+    X_test_large.to_csv(os.path.join(output_dir, 'X_test_large.csv'), index=False)
+    y_train_large.to_csv(os.path.join(output_dir, 'y_train_large.csv'), index=False)
+    y_test_large.to_csv(os.path.join(output_dir, 'y_test_large.csv'), index=False)
 
     print("Dataset split completed for both small and large datasets.")
 
