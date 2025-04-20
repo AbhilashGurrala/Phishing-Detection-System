@@ -1,0 +1,8 @@
+sender,receiver,subject,body,label,urls
+"john.doe@example.com","user1@example.com","Urgent: Your Account is at Risk!","Dear user, your account has been compromised! Please verify now by clicking on this link: www.fakeurl.com",1,1
+"support@banking.com","customer@example.com","Free Offer: Get a Loan Today!","Congratulations! You’ve been selected for a free loan offer. Apply now: www.fakebankurl.com",1,1
+"shane.legit@example.com","colleague@example.com","Meeting Reminder: Join ASAP","Just a quick reminder for our meeting tomorrow. Please be on time!",0,0
+"alerts@securebank.com","client@example.com","Urgent: Action Required","There was suspicious activity on your account. Please log in immediately: www.fakebanklink.com",1,1
+"sarah.partnership@example.com","partner@example.com","Important Project Update","Here's the latest update on the project. Let me know if you need anything else!",0,0
+"netflix.notifications@example.com","subscriber@example.com","Free Trial Offer for Netflix!","You’ve been offered a free month of Netflix. Claim it today at www.fake-netflix.com",1,1
+"james.friend@example.com","friend@example.com","Plans for the Weekend","Are we still going to the trip this weekend? Let me know when you’re free!",0,0
