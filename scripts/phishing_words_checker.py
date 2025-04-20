@@ -4,7 +4,7 @@ import re
 
 #  Connect to the database
 def connect_db():
-    return sqlite3.connect('compromised_domains.db')
+    return sqlite3.connect('../data/compromised_domains.db')
 
 def get_phishing_words():
     """Get the phishing words from the database."""

@@ -5,7 +5,7 @@ import time
 import re
 from datetime import datetime
 
-DB_PATH = 'scripts/compromised_domains.db'
+DB_PATH = '../data/compromised_domains.db'
 
 def connect_db():
     """Connect to the SQLite database"""
@@ -98,17 +98,8 @@ def run_scraper():
     else:
         print("No new domains found.")
 
-# def run_daily_scraper():
-#     """Runs the scraper at 2:00 AM daily"""
-# while True:
-#     print("Running scraper...")
-#     run_scraper()
-#     print("Scraper finished. Waiting for the next run...")
-#     time.sleep(6 * 3600)  # Runs every 6 hours (change as needed)
-
 if __name__ == '__main__':
     create_table()
     run_scraper()
     print("Phishing domain scraper is running")
 
-    # run_daily_scraper()  # Starts the daily schedule

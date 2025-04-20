@@ -2,7 +2,7 @@ import sqlite3
 
 # Function to connect to the SQLite database
 def connect_db():
-    return sqlite3.connect('scripts/compromised_domains.db')
+    return sqlite3.connect('../data/compromised_domains.db')
 
 # Create tables for compromised domains and phishing keywords
 def create_tables():
