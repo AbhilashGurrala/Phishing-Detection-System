@@ -19,7 +19,7 @@ def train_anomaly_detector(X_train, model_path='../models/isolation_forest.pkl')
     print(f"Isolation Forest model saved as {model_path}")
 
 if __name__ == "__main__":
-    # Load the training dataset (large dataset recommended)
+    # Load the training dataset
     X_train = pd.read_csv('../data/X_train_small.csv')
 
     # Select numeric columns only

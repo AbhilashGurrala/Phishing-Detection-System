@@ -1,0 +1,10 @@
+[run]
+omit =
+    scripts/train_*.py
+    scripts/random_forest.py
+    scripts/logistic_regression.py
+    scripts/main.py
+    scripts/database.py
+    scripts/scraper.py
+    scripts/thread_analysis.py
+    scripts/run_models.py
