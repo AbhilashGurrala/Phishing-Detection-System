@@ -1,14 +1,14 @@
 import requests
 import sqlite3
 import pandas as pd
-import time
 import re
-from datetime import datetime
+import os
 
-DB_PATH = '../data/compromised_domains.db'
+DB_PATH = 'data/compromised_domains.db'
 
 def connect_db():
     """Connect to the SQLite database"""
+    os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
     return sqlite3.connect(DB_PATH)
 
 def create_table():
