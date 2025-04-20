@@ -5,8 +5,8 @@ on:
   schedule:
     - cron: '0 6 * * *'
 
-  permissions:
-    contents: write
+permissions:
+  contents: write
 
 jobs:
   update-db:
@@ -33,8 +33,17 @@ jobs:
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add scripts/compromised_domains.db || echo "No file to add"
+          
+          echo "Checking for DB..."
+          ls -l data/compromised_domains.db || echo "DB not found"
+          
+          echo "Staging DB file..."
+          git add -f data/compromised_domains.db || echo "No file to add"
+          
+          echo "Trying to commit..."
           git commit -m "Auto-update DB from scraper" || echo "Nothing to commit"
+          
+          echo "Pushing..."
           git push || echo "Nothing to push"
 
       - name: Notify on failure

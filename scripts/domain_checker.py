@@ -3,7 +3,7 @@ import pandas as pd
 import re
 
 def connect_db():
-    return sqlite3.connect('compromised_domains.db')
+    return sqlite3.connect('../data/compromised_domains.db')
 
 def get_compromised_domains():
     """Get the compromised domains from the database."""
