@@ -1,10 +1,13 @@
 import sqlite3
 import pandas as pd
 import re
-
+import os
 #  Connect to the database
+DB_PATH = 'data/compromised_domains.db'
+
 def connect_db():
-    return sqlite3.connect('../data/compromised_domains.db')
+    os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
+    return sqlite3.connect(DB_PATH)
 
 def get_phishing_words():
     """Get the phishing words from the database."""
