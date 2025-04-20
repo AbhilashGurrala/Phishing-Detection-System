@@ -1,0 +1,12 @@
+pandas
+numpy
+scikit-learn
+xgboost
+nltk
+contractions
+joblib
+matplotlib
+seaborn
+requests
+argparse
+requests
