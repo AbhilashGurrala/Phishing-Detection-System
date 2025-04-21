@@ -14,25 +14,26 @@ def get_phishing_words():
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute("SELECT keyword FROM phishing_keywords")
-    keywords = {row[0].lower() for row in cursor.fetchall()}
+    keywords = [row[0].lower() for row in cursor.fetchall()]
     conn.close()
-    return keywords
+    pattern = r'\b(?:' + '|'.join(re.escape(word) for word in keywords) + r')\b'
+    return re.compile(pattern, re.IGNORECASE), keywords
 
-def check_phishing_words(text, keywords):
+def check_phishing_words(text, pattern, keywords):
     """Check if the text contains any phishing words."""
     if pd.isnull(text):
-        return None
-    text = text.lower()
-    matched_words = [word for word in keywords if re.search(rf'\b{re.escape(word)}\b', text)]
-    return ', '.join(matched_words) if matched_words else None
+        return ""
+    matches = pattern.findall(text.lower())
+    matched_words = sorted({match for match in matches if match in keywords})
+    return ', '.join(matched_words) if matched_words else ""
 
 def run_phishing_check(data):
-    """Apply the check for phishing words."""
-    phishing_keywords = get_phishing_words()
+    """Apply the check for phishing words"""
+    pattern, keywords = get_phishing_words()
 
     # Check phishing words in subject and body
-    data['phishing_words_in_subject'] = data['subject'].apply(lambda x: check_phishing_words(x, phishing_keywords))
-    data['phishing_words_in_body'] = data['body'].apply(lambda x: check_phishing_words(x, phishing_keywords))
+    data['phishing_words_in_subject'] = data['subject'].apply(lambda x: check_phishing_words(x, pattern, keywords))
+    data['phishing_words_in_body'] = data['body'].apply(lambda x: check_phishing_words(x, pattern, keywords))
 
     data = data.assign(
         phishing_words_in_subject=data['phishing_words_in_subject'].fillna(""),

@@ -64,14 +64,14 @@ if __name__ == "__main__":
         y_path = "../data/y_test_small.csv"
         rf_model_path = "../models/random_forest_small.pkl"
         xgb_model_path = "../models/xgboost_small.pkl"
-        anomaly_model_path = "../models/isolation_forest.pkl"  # same for both sizes
+        anomaly_model_path = "../models/isolation_forest_large.pkl"
         output_path = "../data/combined_detection_results_small.csv"
     else:
         X_path = "../data/X_test_large.csv"
         y_path = "../data/y_test_large.csv"
         rf_model_path = "../models/random_forest_large.pkl"
         xgb_model_path = "../models/xgboost_large.pkl"
-        anomaly_model_path = "../models/isolation_forest.pkl"
+        anomaly_model_path = "../models/isolation_forest_large.pkl"
         output_path = "../data/combined_detection_results_large.csv"
 
     combined_detection(

@@ -23,12 +23,17 @@ def get_compromised_domains():
     return domains
 
 def check_domain(domain, compromised_domains):
-    """Check if a domain is compromised."""
+    """Check for exact match or subdomain"""
     if not domain:
-        # if there is no domain then return false
         return False
     domain = domain.lower()
-    return any(domain == comp or domain.endswith(f".{comp}") for comp in compromised_domains)
+    # Split domain and check each suffix level
+    parts = domain.split('.')
+    for i in range(len(parts)):
+        suffix = '.'.join(parts[i:])
+        if suffix in compromised_domains:
+            return True
+    return False
 
 def extract_sender_domain(email):
     """Extract domain from sender's email."""
@@ -47,7 +52,7 @@ def extract_body_domain(text):
     return ', '.join(matched_domains) if matched_domains else None
 
 def run_domain_check(data):
-    """Apply domain checking on preprocessed data."""
+    """Checking domains in preprocessed data."""
     compromised_domains = get_compromised_domains()
 
     # Check domain in sender's email address
