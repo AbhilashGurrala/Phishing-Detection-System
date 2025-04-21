@@ -45,7 +45,7 @@ def combined_detection(X_path, y_path, rf_model_path, xgb_model_path, anomaly_mo
         'sender', 'receiver', 'date', 'subject', 'body', 'urls', 'clean_subject',
         'clean_body', 'sender_domain', 'compromised_sender', 'extracted_domains',
         'compromised_url', 'phishing_words_in_subject', 'phishing_words_in_body',
-        'Actual Label', 'Result'
+        'is_thread_reply', 'deviates_from_thread','Actual Label', 'Result'
     ]
     results_df = X_test[columns_to_keep]
     results_df.to_csv(output_path, index=False)

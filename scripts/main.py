@@ -11,6 +11,8 @@ if __name__ == "__main__":
     data = pd.read_csv('../data/CEAS_08.csv')
     # Run preprocessing
     run_preprocessing(data)
+    # Add thread analysis features
+    data = add_thread_features(data)
     # Run domain check
     run_domain_check(data)
     # Run phishing words check
@@ -19,8 +21,6 @@ if __name__ == "__main__":
     # Extract features and merge with the main DataFrame
     features = run_feature_extraction(data)
     data = pd.concat([data, features], axis=1)
-
-    data = add_thread_features(data)
 
     # Save the updated processed data
     data.to_csv('processed_data.csv', index=False)

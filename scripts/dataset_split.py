@@ -2,7 +2,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 import os
 
-def split_dataset(file_path, small_size=1000, test_size=0.2, random_state=42, output_dir=None):
+def split_dataset(file_path, small_size=3000, test_size=0.2, random_state=42, output_dir=None):
     """Splits the dataset into small and large training/testing sets."""
 
     if output_dir is None:
