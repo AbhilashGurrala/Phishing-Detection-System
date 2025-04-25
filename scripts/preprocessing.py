@@ -24,7 +24,7 @@ def preprocess(text):
     # Fixing contractions
     text = contractions.fix(text)
     # Removing URLs
-    text = re.sub(r'http[s]?://\S+|www\.\S+|ftp://\S+', '', text)
+    # text = re.sub(r'http[s]?://\S+|www\.\S+|ftp://\S+', '', text)
     # Removing special characters
     text = re.sub(r'[^a-zA-Z\s]', '', text)
     # Tokenize the text converted to lower case

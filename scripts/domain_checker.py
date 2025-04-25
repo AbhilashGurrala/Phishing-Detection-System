@@ -3,7 +3,7 @@ import pandas as pd
 import re
 import os
 
-DB_PATH = 'data/compromised_domains.db'
+DB_PATH = '../data/compromised_domains.db'
 
 def connect_db():
     os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)

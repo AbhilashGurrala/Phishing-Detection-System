@@ -7,6 +7,8 @@ from feature_extraction import run_feature_extraction
 from scripts.thread_analysis import add_thread_features
 from dataset_split import split_dataset
 from combined_detection import combined_detection
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning)
 from email_notification import send_email_notification, notify_if_phishing
 
 if __name__ == "__main__":
@@ -32,7 +34,10 @@ if __name__ == "__main__":
     run_phishing_check(data)
     print("Phishing words check completed")
 
-
+    data['phishing_words_in_subject'] = data['phishing_words_in_subject'].apply(lambda x: int(bool(x)))
+    data['phishing_words_in_body'] = data['phishing_words_in_body'].apply(lambda x: int(bool(x)))
+    data['compromised_sender'] = data['compromised_sender'].astype(int)
+    data['compromised_url'] = data['compromised_url'].astype(int)
     # Extract features and merge with the main DataFrame
     print("Starting feature extraction")
     features = run_feature_extraction(data)
