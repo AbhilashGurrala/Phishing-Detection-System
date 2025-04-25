@@ -17,8 +17,11 @@ def combined_detection(X_path, y_path, rf_model_path, xgb_model_path, anomaly_mo
     anomaly_detector = joblib.load(anomaly_model_path)
 
     # Predictions
-    rf_pred = rf_model.predict(X_test_numeric)
-    xgb_pred = xgb_model.predict(X_test_numeric)
+    rf_probs = rf_model.predict_proba(X_test_numeric)[:, 1]
+    xgb_probs = xgb_model.predict_proba(X_test_numeric)[:, 1]
+
+    rf_pred = (rf_probs >= 0.5).astype(int)
+    xgb_pred = (xgb_probs >= 0.5).astype(int)
     anomaly_pred = [0 if pred == -1 else 1 for pred in anomaly_detector.predict(X_test_numeric)]
 
     # Combine logic
@@ -30,6 +33,9 @@ def combined_detection(X_path, y_path, rf_model_path, xgb_model_path, anomaly_mo
     binary_pred = [1 if label == "Phishing" else 0 for label in combined_pred]
     accuracy = accuracy_score(y_test, binary_pred)
 
+    # Calculate average confidence score between Random Forest and XGBoost
+    confidence_scores = ((rf_probs + xgb_probs) / 2).round(4)
+
     print(f"\nCombined Detection Accuracy ({output_path}): {accuracy:.4f}")
     print("\nClassification Report:")
     print(classification_report(y_test, binary_pred))
@@ -39,13 +45,15 @@ def combined_detection(X_path, y_path, rf_model_path, xgb_model_path, anomaly_mo
     # Add results to the original data
     X_test['Actual Label'] = ["Phishing" if y == 1 else "Legitimate" for y in y_test]
     X_test['Result'] = combined_pred
+    # Add confidence score to the original data
+    X_test['Confidence Score'] = (confidence_scores * 100).round(2).astype(str) + '%'
 
     # Save only selected columns
     columns_to_keep = [
         'sender', 'receiver', 'date', 'subject', 'body', 'urls', 'clean_subject',
         'clean_body', 'sender_domain', 'compromised_sender', 'extracted_domains',
         'compromised_url', 'phishing_words_in_subject', 'phishing_words_in_body',
-        'is_thread_reply', 'deviates_from_thread','Actual Label', 'Result'
+        'is_thread_reply', 'deviates_from_thread','Actual Label', 'Result', 'Confidence Score'
     ]
     results_df = X_test[columns_to_keep]
     results_df.to_csv(output_path, index=False)

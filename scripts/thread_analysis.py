@@ -30,7 +30,7 @@ def find_previous_message(row, df):
     return None
 
 def compare_with_previous(row, df):
-    """Compare email body to previous message in thread and return deviation score"""
+    """Compare email body to previous message in thread and return the score of deviation"""
     previous = find_previous_message(row, df)
     if previous is None:
         return 0

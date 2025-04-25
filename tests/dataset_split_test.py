@@ -5,7 +5,7 @@ from scripts.dataset_split import split_dataset
 
 class TestDatasetSplit(unittest.TestCase):
     def setUp(self):
-        # using relative path as its different for test
+        # using relative path as it is different for test
         self.sample_csv_path = os.path.abspath(
             os.path.join(os.path.dirname(__file__), '..', 'test_data', 'sample.csv')
         )

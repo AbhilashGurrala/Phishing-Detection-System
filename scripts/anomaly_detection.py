@@ -12,15 +12,18 @@ def train_anomaly_detector(dataset_size="large"):
         X_train_file = '../data/X_train_large.csv'
         model_path = '../models/isolation_forest_large.pkl'
 
+    # Load the numeric features in training data
     X_train = pd.read_csv(X_train_file)
     X_train = X_train.select_dtypes(include=['number'])
 
     imputer = SimpleImputer(strategy="mean")
     X_train_imputed = imputer.fit_transform(X_train)
 
+    # Train the isolation forest model
     model = IsolationForest(n_estimators=100, contamination=0.05, random_state=42)
     model.fit(X_train_imputed)
 
+    # Save the trained isolation forest model
     joblib.dump(model, model_path)
     print(f"Isolation Forest model saved as {model_path}")
 
