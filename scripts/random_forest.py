@@ -45,7 +45,7 @@ def train_random_forest(dataset_size="large"):
 
     print("\nTraining Classification Report:")
     print(classification_report(y_train, y_train_pred))
-
+    print("Training features shape:", X_train.shape)
     # Save the trained model
     joblib.dump(model, model_path)
     print(f"Model saved successfully as {model_path}")

@@ -4,7 +4,7 @@ import pandas as pd
 import re
 import os
 
-DB_PATH = 'data/compromised_domains.db'
+DB_PATH = '../data/compromised_domains.db'
 
 def connect_db():
     """Connect to the SQLite database"""

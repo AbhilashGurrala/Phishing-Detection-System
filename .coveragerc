@@ -8,3 +8,7 @@ omit =
     scripts/scraper.py
     scripts/thread_analysis.py
     scripts/run_models.py
+    scripts/anomaly_detection.py
+    scripts/email_notification.py
+    scripts/insert_file.py
+    scripts/visualizations.py

@@ -61,7 +61,7 @@ if args.size == "small":
         "Logistic Regression": "../models/logistic_regression_small.pkl",
         "Random Forest": "../models/random_forest_small.pkl",
         "XGBoost": "../models/xgboost_small.pkl",
-        "Support Vector Machine (SVM)": "../models/svm_small.pkl",
+        # "Support Vector Machine (SVM)": "../models/svm_small.pkl",
         "Naïve Bayes": "../models/naive_bayes_small.pkl",
         "Decision Tree": "../models/decision_tree_small.pkl"
     }

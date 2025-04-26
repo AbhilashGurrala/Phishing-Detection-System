@@ -5,13 +5,14 @@ from scripts.combined_detection import combined_detection
 
 class TestCombinedDetection(unittest.TestCase):
     def setUp(self):
-        self.x_path = "../test_data/X_test_small_sample.csv"
-        self.y_path = "../test_data/y_test_small_sample.csv"
-        self.output_path = "../test_data/combined_detection_results_small_sample.csv"
+        base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
-        self.rf_model_path = "../models/random_forest_small.pkl"
-        self.xgb_model_path = "../models/xgboost_small.pkl"
-        self.anomaly_model_path = "../models/isolation_forest.pkl"
+        self.x_path = os.path.join(base_dir, 'data', 'X_test_small.csv')
+        self.y_path = os.path.join(base_dir, 'data', 'y_test_small.csv')
+        self.output_path = os.path.join(base_dir, 'test_data', 'combined_detection_results_small_sample.csv')
+        self.rf_model_path = os.path.join(base_dir, 'models', 'random_forest_small.pkl')
+        self.xgb_model_path = os.path.join(base_dir, 'models', 'xgboost_small.pkl')
+        self.anomaly_model_path = os.path.join(base_dir, 'models', 'isolation_forest_small.pkl')
 
     def test_combined_detection_with_real_data(self):
         accuracy = combined_detection(
